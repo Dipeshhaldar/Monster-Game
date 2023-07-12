@@ -3,8 +3,8 @@ const STRONG_ATTACK_VALUE = 17;
 const MONSTER_ATTACK_VALUE = 14;
 const HEAL_VALUE = 20;
 
-const MODE_ATTACK = "ATTACK"; // MODE_ATTACK = 0
-const MODE_STRONG_ATTACK = "STRONG_ATTACK"; // MODE_STRONG_ATTACK = 1
+const MODE_ATTACK = "ATTACK";
+const MODE_STRONG_ATTACK = "STRONG_ATTACK";
 const LOG_EVENT_PLAYER_ATTACK = "PLAYER_ATTACK";
 const LOG_EVENT_PLAYER_STRONG_ATTACK = "PLAYER_STRONG_ATTACK";
 const LOG_EVENT_MONSTER_ATTACK = "MONSTER_ATTACK";
@@ -15,6 +15,7 @@ const enteredValue = prompt("Maximum life for you and the monster.", "100");
 
 let chosenMaxLife = parseInt(enteredValue);
 let battleLog = [];
+let lastLoggedEntry;
 
 if (isNaN(chosenMaxLife) || chosenMaxLife <= 0) {
   chosenMaxLife = 100;
@@ -175,13 +176,17 @@ function healPlayerHandler() {
 
 function printLogHandler() {
   for (let i = 0; i < 3; i++) {
-    console.log('----------');
+    console.log("----------");
   }
   let i = 0;
   for (const logEntry of battleLog) {
-    console.log(`#${i}`);
-    for (const key in logEntry) {
-      console.log(`$(key) => ${logEntry[key]}`);
+    if (!lastLoggedEntry && lastLoggedEntry !== 0 || lastLoggedEntry < i) {
+      console.log(`#${i}`);
+      for (const key in logEntry) {
+        console.log(`$(key) => ${logEntry[key]}`);
+      }
+      lastLoggedEntry = i;
+      break;
     }
     i++;
   }
